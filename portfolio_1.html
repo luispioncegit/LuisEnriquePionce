@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luis Enrique Pionce | Data Scientist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-color: #e0e0e0;
+            --neon-fuchsia: #D900FF;
+            --neon-cyan: #00F0FF;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- CANVAS 3D BACKGROUND --- */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* --- NAV / LOGO --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 2rem 5%;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: -2px;
+            color: #fff;
+            border: 1px solid var(--neon-fuchsia);
+            padding: 0.5rem 1rem;
+            box-shadow: 0 0 15px rgba(217, 0, 255, 0.3);
+            background: rgba(0,0,0,0.5);
+        }
+
+        .logo span { color: var(--neon-fuchsia); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 10%;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 5rem;
+            line-height: 1;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            color: #fff;
+            text-shadow: 0 0 25px rgba(0,0,0,0.9);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-family: 'Fira Code', monospace;
+            color: var(--neon-fuchsia);
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--neon-fuchsia);
+            background: rgba(0,0,0,0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            border: 1px solid rgba(217, 0, 255, 0.2);
+        }
+
+        .cta-btn {
+            margin-top: 3rem;
+            padding: 1rem 2rem;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--neon-fuchsia);
+            color: #fff;
+            font-family: 'Fira Code', monospace;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-btn:hover {
+            background: var(--neon-fuchsia);
+            box-shadow: 0 0 30px var(--neon-fuchsia);
+            color: #fff;
+        }
+
+        /* --- PROJECTS SECTION --- */
+        .projects-section {
+            padding: 5rem 10%;
+            background: linear-gradient(to bottom, transparent 0%, #050505 30%);
+            position: relative;
+            z-index: 5;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            border-left: 4px solid var(--neon-fuchsia);
+            padding-left: 1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s ease;
+            cursor: pointer; /* Indicar que es clickeable */
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon-fuchsia);
+            box-shadow: 0 0 20px rgba(217, 0, 255, 0.1);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #bbb;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: var(--neon-cyan);
+            border-radius: 4px;
+        }
+
+        .card-visual {
+            height: 160px;
+            background: rgba(0,0,0,0.3);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed #444;
+            color: #666;
+            font-family: 'Fira Code', monospace;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        /* --- MODAL (POP-UP PARA POWER BI) --- */
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9); /* Fondo oscuro detrás del modal */
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #111;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid var(--neon-fuchsia);
+            width: 95%;
+            max-width: 1400px;
+            height: 90vh;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(217, 0, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .close-btn {
+            color: #aaa;
+            align-self: flex-end;
+            font-size: 20px;
+            font-weight: 300;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: var(--neon-fuchsia);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Contenedor responsivo para el iframe */
+        .iframe-container {
+            flex-grow: 1;
+            width: 100%;
+            position: relative;
+            background: #000;
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Mensaje de "Click para ver" en la card */
+        .click-hint {
+            font-size: 0.7rem; 
+            color: var(--neon-fuchsia); 
+            margin-top: 1rem; 
+            font-family: 'Fira Code';
+            display: block;
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+
+    <nav>
+        <div class="logo">L<span>E</span>P</div>
+        <div style="font-family: 'Fira Code'; font-size: 0.8rem; opacity: 0.8;">System Status: ONLINE</div>
+    </nav>
+
+    <section class="hero">
+        <p class="subtitle">> INITIALIZING NEURAL LINK...</p>
+        <h1>Luis Enrique<br>Pionce</h1>
+        <p style="font-size: 1.1rem; color: #ccc; max-width: 600px; margin-top: 1rem; background: rgba(0,0,0,0.4); padding: 10px; border-radius: 5px;">
+            Data Scientist & Python Developer
+        </p>
+        <button class="cta-btn">Ver Arquitectura</button>
+    </section>
+
+    <section class="projects-section">
+        <h2 class="section-title">Proyectos Destacados</h2>
+        
+        <div class="grid">
+            <div class="card">
+                <div class="card-visual">[ Chatbot Interface ]</div>
+                <h3>Neural Conversational AI</h3>
+                <p>Asistente virtual con procesamiento de lenguaje natural avanzado.</p>
+                <div class="tech-stack">
+                    <span class="tag">Python</span>
+                    <span class="tag">NLP</span>
+                    <span class="tag">FastAPI</span>
+                    <span class="tag">React</span>
+                </div>
+            </div>
+
+            <div class="card" onclick="openModal()">
+                <div class="card-visual" style="
+                    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('Reporte Power BI.png'); 
+                    background-size: cover; 
+                    background-position: center; 
+                    border: 1px solid var(--neon-cyan); 
+                    color: #fff;">
+                    
+                    <div style="background: rgba(0,240,255,0.2); backdrop-filter: blur(4px); padding: 8px 15px; border: 1px solid var(--neon-cyan); border-radius: 4px; font-weight: bold;">
+                        VER LIVE DEMO
+                    </div>
+                </div>
+                <h3>Supply Chain Forecast</h3>
+                <p>Optimización de inventarios mediante predicción de demanda. Tablero interactivo alimentado por ML.</p>
+                <div class="tech-stack">
+                    <span class="tag">Power BI</span>
+                    <span class="tag">Python ML</span>
+                    <span class="tag">SQL</span>
+                </div>
+                <span class="click-hint">> Click para interactuar con el Dashboard</span>
+            </div>
+
+            <div class="card" style="opacity: 0.7;">
+                <div class="card-visual">[ Pipeline Monitor ]</div>
+                <h3>Data Pipeline Engine</h3>
+                <p>Orquestación de flujos ETL automatizados. (En desarrollo)</p>
+                <div class="tech-stack">
+                    <span class="tag">Airflow</span>
+                    <span class="tag">Docker</span>
+                    <span class="tag">SQL</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="powerbiModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times; Cerrar</span>
+            <div class="iframe-container">
+                <iframe 
+                    id="dashboard-frame"
+                    title="Supply Chain Dashboard" 
+                    src="" 
+                    frameborder="0" 
+                    allowFullScreen="true">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- LOGICA DEL MODAL ---
+        
+        // Pon aquí TU LINK de Power BI entre las comillas:
+        const powerBiLink = "https://app.powerbi.com/reportEmbed?reportId=547fb34a-3dee-415a-91fc-ebfe727b8138&autoAuth=true&ctid=983927a0-2580-46b8-9f73-935a7aabdd35"; 
+
+        function openModal() {
+            const modal = document.getElementById("powerbiModal");
+            const iframe = document.getElementById("dashboard-frame");
+            
+            // Cargamos el link solo cuando se abre para no hacer lenta la página
+            if(iframe.src === "" || iframe.src === window.location.href) {
+                iframe.src = powerBiLink; 
+            }
+            
+            modal.style.display = "flex";
+        }
+
+        function closeModal() {
+            const modal = document.getElementById("powerbiModal");
+            // Opcional: Limpiar el src si quieres que se recargue cada vez (ahorra memoria si hay muchos videos/dashboards)
+            // document.getElementById("dashboard-frame").src = ""; 
+            modal.style.display = "none";
+        }
+
+        // Cerrar si se hace click fuera del contenido del modal
+        window.onclick = function(event) {
+            const modal = document.getElementById("powerbiModal");
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // --- THREE.JS CONFIGURATION (Igual que antes) ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        const brainGroup = new THREE.Group();
+        scene.add(brainGroup);
+
+        const nodes = [];
+        const numNodes = 200; 
+        const radius = 4.5;
+        const maxDistance = 2.0; 
+
+        const nodeGeometry = new THREE.SphereGeometry(0.07, 10, 10);
+        const nodeMaterial = new THREE.MeshBasicMaterial({ 
+            color: 0xD900FF, 
+            transparent: true,
+            opacity: 0.9
+        });
+
+        for (let i = 0; i < numNodes; i++) {
+            const phi = Math.acos(-1 + (2 * i) / numNodes);
+            const theta = Math.sqrt(numNodes * Math.PI) * phi;
+
+            const node = new THREE.Mesh(nodeGeometry, nodeMaterial);
+            node.position.x = radius * Math.cos(theta) * Math.sin(phi);
+            node.position.y = radius * Math.sin(theta) * Math.sin(phi);
+            node.position.z = radius * Math.cos(phi);
+            
+            node.position.x += (Math.random() - 0.5) * 0.6;
+            node.position.y += (Math.random() - 0.5) * 0.6;
+            node.position.z += (Math.random() - 0.5) * 0.6;
+
+            brainGroup.add(node);
+            nodes.push(node);
+        }
+
+        const lineMaterial = new THREE.LineBasicMaterial({
+            color: 0xE0FFFF, 
+            transparent: true,
+            opacity: 0.35,   
+            blending: THREE.AdditiveBlending
+        });
+
+        const linesGeometry = new THREE.BufferGeometry();
+        const linePositions = [];
+
+        for (let i = 0; i < numNodes; i++) {
+            for (let j = i + 1; j < numNodes; j++) {
+                const dist = nodes[i].position.distanceTo(nodes[j].position);
+                if (dist < maxDistance) {
+                    linePositions.push(
+                        nodes[i].position.x, nodes[i].position.y, nodes[i].position.z,
+                        nodes[j].position.x, nodes[j].position.y, nodes[j].position.z
+                    );
+                }
+            }
+        }
+
+        linesGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+        const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
+        brainGroup.add(linesMesh);
+
+        camera.position.z = 11;
+
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - window.innerWidth / 2) * 0.001;
+            mouseY = (event.clientY - window.innerHeight / 2) * 0.001;
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            brainGroup.rotation.y += 0.002; 
+            targetRotationY = mouseX * 1.5;
+            targetRotationX = mouseY * 1.5;
+            brainGroup.rotation.y += 0.05 * (targetRotationY - brainGroup.rotation.y);
+            brainGroup.rotation.x += 0.05 * (targetRotationX - brainGroup.rotation.x);
+
+            const scale = 1 + Math.sin(time * 1.5) * 0.02; 
+            brainGroup.scale.set(scale, scale, scale);
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
