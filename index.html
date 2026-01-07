@@ -290,16 +290,27 @@
         <h2 class="section-title">Proyectos Destacados</h2>
         
         <div class="grid">
-            <div class="card">
-                <div class="card-visual">[ Chatbot Interface ]</div>
-                <h3>Neural Conversational AI</h3>
-                <p>Asistente virtual con procesamiento de lenguaje natural avanzado.</p>
-                <div class="tech-stack">
-                    <span class="tag">Python</span>
-                    <span class="tag">NLP</span>
-                    <span class="tag">FastAPI</span>
-                    <span class="tag">React</span>
+            <div class="card" onclick="openNouxTrends()">
+                <div class="card-visual" style="
+                    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('App pronósticos.png'); 
+                    background-size: cover; 
+                    background-position: center; 
+                    border: 1px solid var(--neon-cyan); 
+                    color: #fff;">
+                    
+                    <div style="background: rgba(0,240,255,0.2); backdrop-filter: blur(4px); padding: 8px 15px; border: 1px solid var(--neon-cyan); border-radius: 4px; font-weight: bold; letter-spacing: 1px;">
+                        EJECUTAR APP VIVA
+                    </div>
                 </div>
+                <h3>NouxTrends: Sales Forecaster</h3>
+                <p>Ecosistema Full-Stack para predicción de ventas multi-nivel usando LightGBM y análisis de series temporales.</p>
+                <div class="tech-stack">
+                    <span class="tag">FastAPI</span>
+                    <span class="tag">Streamlit</span>
+                    <span class="tag">Python ML</span>
+                    <span class="tag">Docker/Render</span>
+                </div>
+                <span class="click-hint">> Click para abrir la aplicación interactiva</span>
             </div>
 
             <div class="card" onclick="openModal()">
@@ -353,6 +364,37 @@
     </div>
 
     <script>
+        // --- LOGICA PARA TRENDSAPP ---
+
+        /*
+        // Versión que abre en modal integrado (iframe)
+
+        const nouxTrendsURL = "https://trends-app-frontend.onrender.com"; 
+
+        function openNouxTrends() {
+            const modal = document.getElementById("powerbiModal"); // Reutilizamos tu ID de modal
+            const iframe = document.getElementById("dashboard-frame");
+            
+            if(iframe.src !== nouxTrendsURL) {
+                iframe.src = nouxTrendsURL; 
+            }
+            
+            modal.style.display = "flex";
+        }
+        */
+
+        
+            // Versión original que abre en pestaña nueva
+        const nouxTrendsURL = "https://trends-app-frontend.onrender.com"; 
+
+        function openNouxTrends() {
+            // Abrir en pestaña nueva para mejor experiencia de usuario en Streamlit
+            window.open(nouxTrendsURL, '_blank');
+        }
+        
+
+
+
         // --- LOGICA DEL MODAL ---
         
         // Pon aquí TU LINK de Power BI entre las comillas:
